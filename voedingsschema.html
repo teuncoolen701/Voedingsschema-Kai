@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Voeding">
+<title>🍼 Voedingsschema</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f5f0;
+    color: #1a1a1a;
+    min-height: 100vh;
+    padding-bottom: 2rem;
+  }
+  header {
+    background: #fff;
+    border-bottom: 1px solid #e8e8e4;
+    padding: 1rem 1.25rem 0.75rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
+  header p { font-size: 13px; color: #888; margin-top: 2px; }
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #e8e8e4;
+    padding: 1rem 1.25rem;
+    margin: 1rem 1rem 0;
+  }
+  .card h2 { font-size: 13px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .field { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; }
+  .field + .field { border-top: 1px solid #f0f0ec; }
+  .field label { font-size: 15px; color: #1a1a1a; }
+  .field input[type=time],
+  .field input[type=number],
+  .field input[type=text] {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 15px;
+    color: #1a1a1a;
+    background: #fafafa;
+    text-align: right;
+    -webkit-appearance: none;
+    outline: none;
+  }
+  .field input[type=time] { width: 120px; }
+  .field input[type=number] { width: 70px; }
+  .field input[type=text] { width: 130px; text-align: right; }
+  .field input:focus { border-color: #5b8fff; background: #fff; }
+  .gen-btn {
+    display: block;
+    width: calc(100% - 2rem);
+    margin: 1rem 1rem 0;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s;
+  }
+  .gen-btn:active { background: #333; }
+  .schema-wrap { margin: 1rem 1rem 0; }
+  .schema-wrap h2 { font-size: 13px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; padding: 0 2px; }
+  .slot {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid #e8e8e4;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 6px;
+  }
+  .slot.now {
+    border-color: #5b8fff;
+    background: #f0f5ff;
+  }
+  .slot.next {
+    border-color: #c8d8ff;
+    background: #f8faff;
+  }
+  .slot.night { background: #faf8ff; border-color: #e0d8f0; }
+  .time { font-size: 17px; font-weight: 600; min-width: 56px; color: #1a1a1a; letter-spacing: -0.3px; }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600; flex-shrink: 0;
+  }
+  .av-a { background: #ddeeff; color: #1a5fbf; }
+  .av-b { background: #ddf0e8; color: #1a6b4a; }
+  .info { flex: 1; }
+  .name { font-size: 15px; font-weight: 500; color: #1a1a1a; }
+  .tag { font-size: 12px; color: #aaa; margin-top: 1px; }
+  .now .tag { color: #5b8fff; font-weight: 500; }
+  .badge {
+    font-size: 11px; font-weight: 500; padding: 3px 8px;
+    border-radius: 20px; flex-shrink: 0;
+  }
+  .badge-now { background: #5b8fff; color: #fff; }
+  .badge-next { background: #e0e8ff; color: #3355cc; }
+  .badge-night { background: #ece8f8; color: #6644aa; }
+  .empty { text-align: center; color: #aaa; font-size: 15px; padding: 2rem 0; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #111; color: #f0f0f0; }
+    header { background: #1c1c1e; border-color: #2c2c2e; }
+    .card { background: #1c1c1e; border-color: #2c2c2e; }
+    .field + .field { border-color: #2c2c2e; }
+    .field input { background: #2c2c2e; border-color: #3a3a3c; color: #f0f0f0; }
+    .gen-btn { background: #f0f0f0; color: #111; }
+    .gen-btn:active { background: #ccc; }
+    .slot { background: #1c1c1e; border-color: #2c2c2e; }
+    .slot.now { background: #1a2540; border-color: #3355aa; }
+    .slot.next { background: #161e30; border-color: #2a3a70; }
+    .slot.night { background: #1a1825; border-color: #342a50; }
+    .time { color: #f0f0f0; }
+    .name { color: #f0f0f0; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>🍼 Voedingsschema</h1>
+  <p id="datum">Vandaag</p>
+</header>
+
+<div class="card">
+  <h2>Instellingen</h2>
+  <div class="field">
+    <label>Starttijd</label>
+    <input type="time" id="start" value="09:00" />
+  </div>
+  <div class="field">
+    <label>Interval dag (u)</label>
+    <input type="number" id="interval_dag" value="3" min="1" max="8" step="0.5" />
+  </div>
+  <div class="field">
+    <label>Interval nacht (u)</label>
+    <input type="number" id="interval_nacht" value="4" min="1" max="8" step="0.5" />
+  </div>
+  <div class="field">
+    <label>Naam 1</label>
+    <input type="text" id="naam1" value="Teun" placeholder="Naam 1" />
+  </div>
+  <div class="field">
+    <label>Naam 2</label>
+    <input type="text" id="naam2" value="Michelle" placeholder="Naam 2" />
+  </div>
+</div>
+
+<button class="gen-btn" onclick="genereer()">Schema genereren</button>
+
+<div class="schema-wrap">
+  <h2 id="schema-titel" style="display:none">Schema van vandaag</h2>
+  <div id="schema"><p class="empty">Vul de instellingen in en druk op genereren.</p></div>
+</div>
+
+<script>
+  const dagen = ['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag'];
+  const maanden = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+  const now = new Date();
+  document.getElementById('datum').textContent =
+    dagen[now.getDay()] + ' ' + now.getDate() + ' ' + maanden[now.getMonth()];
+
+  function isNacht(mins) {
+    const h = Math.floor(mins / 60) % 24;
+    return h >= 0 && h < 6;
+  }
+
+  function formatTime(mins) {
+    const h = Math.floor(mins / 60) % 24;
+    const m = mins % 60;
+    return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+  }
+
+  function genereer() {
+    const startVal = document.getElementById('start').value;
+    const dagInterval = Math.round(parseFloat(document.getElementById('interval_dag').value) * 60) || 180;
+    const nachtInterval = Math.round(parseFloat(document.getElementById('interval_nacht').value) * 60) || 240;
+    const n1 = document.getElementById('naam1').value || 'Naam 1';
+    const n2 = document.getElementById('naam2').value || 'Naam 2';
+    if (!startVal) return;
+
+    const [sh, sm] = startVal.split(':').map(Number);
+    let currentMins = sh * 60 + sm;
+    const startMins = currentMins;
+    const slots = [];
+    let personIdx = 0;
+
+    while (true) {
+      const normMins = ((currentMins % 1440) + 1440) % 1440;
+      slots.push({ mins: normMins, name: personIdx % 2 === 0 ? n1 : n2, isNacht: isNacht(normMins) });
+
+      const interval = isNacht(normMins) ? nachtInterval : dagInterval;
+      currentMins += interval;
+      personIdx++;
+
+      if (currentMins - startMins >= 1440) break;
+    }
+
+    const nowMins = now.getHours() * 60 + now.getMinutes();
+    let nextIdx = -1;
+    let nowIdx = -1;
+
+    for (let i = 0; i < slots.length; i++) {
+      const diff = slots[i].mins - nowMins;
+      if (diff >= 0 && diff < 30) { nowIdx = i; break; }
+      if (diff >= 30 && nextIdx === -1) nextIdx = i;
+    }
+    if (nowIdx === -1 && nextIdx === -1) {
+      for (let i = 0; i < slots.length; i++) {
+        if (slots[i].mins > nowMins) { nextIdx = i; break; }
+      }
+    }
+
+    let html = '';
+    slots.forEach((slot, i) => {
+      let cls = slot.isNacht ? ' night' : '';
+      let badge = '';
+      if (i === nowIdx) { cls = ' now'; badge = '<span class="badge badge-now">Nu</span>'; }
+      else if (i === nextIdx) { cls = ' next'; badge = '<span class="badge badge-next">Volgende</span>'; }
+      else if (slot.isNacht) { badge = '<span class="badge badge-night">🌙 nacht</span>'; }
+
+      const isA = slot.name === n1;
+      const tagTxt = i === nowIdx ? 'Aan de beurt' : slot.isNacht ? 'Nacht (' + document.getElementById('interval_nacht').value + 'u interval)' : 'Dag (' + document.getElementById('interval_dag').value + 'u interval)';
+
+      html += `<div class="slot${cls}">
+        <span class="time">${formatTime(slot.mins)}</span>
+        <div class="avatar ${isA ? 'av-a' : 'av-b'}">${slot.name.charAt(0).toUpperCase()}</div>
+        <div class="info">
+          <div class="name">${slot.name}</div>
+          <div class="tag">${tagTxt}</div>
+        </div>
+        ${badge}
+      </div>`;
+    });
+
+    document.getElementById('schema').innerHTML = html;
+    document.getElementById('schema-titel').style.display = 'block';
+  }
+
+  genereer();
+</script>
+</body>
+</html>
