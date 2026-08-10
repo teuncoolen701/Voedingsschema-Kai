@@ -8,124 +8,177 @@
 <meta name="apple-mobile-web-app-title" content="Voeding">
 <title>🍼 Voedingsschema</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #f5f5f0;
-    color: #1a1a1a;
-    min-height: 100vh;
-    padding-bottom: 2rem;
-  }
-  header {
-    background: #fff;
-    border-bottom: 1px solid #e8e8e4;
-    padding: 1rem 1.25rem 0.75rem;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  header h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
-  header p { font-size: 13px; color: #888; margin-top: 2px; }
-  .card {
-    background: #fff;
-    border-radius: 14px;
-    border: 1px solid #e8e8e4;
-    padding: 1rem 1.25rem;
-    margin: 1rem 1rem 0;
-  }
-  .card h2 { font-size: 13px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
-  .field { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; }
-  .field + .field { border-top: 1px solid #f0f0ec; }
-  .field label { font-size: 15px; color: #1a1a1a; }
-  .field input[type=time],
-  .field input[type=number],
-  .field input[type=text] {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 6px 10px;
-    font-size: 15px;
-    color: #1a1a1a;
-    background: #fafafa;
-    text-align: right;
-    -webkit-appearance: none;
-    outline: none;
-  }
-  .field input[type=time] { width: 120px; }
-  .field input[type=number] { width: 70px; }
-  .field input[type=text] { width: 130px; text-align: right; }
-  .field input:focus { border-color: #5b8fff; background: #fff; }
-  .gen-btn {
-    display: block;
-    width: calc(100% - 2rem);
-    margin: 1rem 1rem 0;
-    background: #1a1a1a;
-    color: #fff;
-    border: none;
-    border-radius: 14px;
-    padding: 15px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: background 0.15s;
-  }
-  .gen-btn:active { background: #333; }
-  .schema-wrap { margin: 1rem 1rem 0; }
-  .schema-wrap h2 { font-size: 13px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; padding: 0 2px; }
-  .slot {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #fff;
-    border: 1px solid #e8e8e4;
-    border-radius: 12px;
-    padding: 12px 14px;
-    margin-bottom: 6px;
-  }
-  .slot.now {
-    border-color: #5b8fff;
-    background: #f0f5ff;
-  }
-  .slot.next {
-    border-color: #c8d8ff;
-    background: #f8faff;
-  }
-  .slot.night { background: #faf8ff; border-color: #e0d8f0; }
-  .time { font-size: 17px; font-weight: 600; min-width: 56px; color: #1a1a1a; letter-spacing: -0.3px; }
-  .avatar {
-    width: 36px; height: 36px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 600; flex-shrink: 0;
-  }
-  .av-a { background: #ddeeff; color: #1a5fbf; }
-  .av-b { background: #ddf0e8; color: #1a6b4a; }
-  .info { flex: 1; }
-  .name { font-size: 15px; font-weight: 500; color: #1a1a1a; }
-  .tag { font-size: 12px; color: #aaa; margin-top: 1px; }
-  .now .tag { color: #5b8fff; font-weight: 500; }
-  .badge {
-    font-size: 11px; font-weight: 500; padding: 3px 8px;
-    border-radius: 20px; flex-shrink: 0;
-  }
-  .badge-now { background: #5b8fff; color: #fff; }
-  .badge-next { background: #e0e8ff; color: #3355cc; }
-  .badge-night { background: #ece8f8; color: #6644aa; }
-  .empty { text-align: center; color: #aaa; font-size: 15px; padding: 2rem 0; }
-  @media (prefers-color-scheme: dark) {
-    body { background: #111; color: #f0f0f0; }
-    header { background: #1c1c1e; border-color: #2c2c2e; }
-    .card { background: #1c1c1e; border-color: #2c2c2e; }
-    .field + .field { border-color: #2c2c2e; }
-    .field input { background: #2c2c2e; border-color: #3a3a3c; color: #f0f0f0; }
-    .gen-btn { background: #f0f0f0; color: #111; }
-    .gen-btn:active { background: #ccc; }
-    .slot { background: #1c1c1e; border-color: #2c2c2e; }
-    .slot.now { background: #1a2540; border-color: #3355aa; }
-    .slot.next { background: #161e30; border-color: #2a3a70; }
-    .slot.night { background: #1a1825; border-color: #342a50; }
-    .time { color: #f0f0f0; }
-    .name { color: #f0f0f0; }
-  }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f5f5f0;
+  color: #1a1a1a;
+  min-height: 100vh;
+  padding-bottom: 3rem;
+}
+@media (prefers-color-scheme: dark) {
+  body { background: #111; color: #f0f0f0; }
+  header { background: #1c1c1e !important; border-color: #2c2c2e !important; }
+  header p { color: #888 !important; }
+  .card { background: #1c1c1e !important; border-color: #2c2c2e !important; }
+  .field { border-color: #2c2c2e !important; }
+  .field label { color: #f0f0f0 !important; }
+  .field input { background: #2c2c2e !important; border-color: #3a3a3c !important; color: #f0f0f0 !important; }
+  .gen-btn { background: #f0f0f0 !important; color: #111 !important; }
+  .slot { background: #1c1c1e !important; border-color: #2c2c2e !important; }
+  .slot.nu { background: #1a2540 !important; border-color: #3355aa !important; }
+  .slot.volgende { background: #161e30 !important; border-color: #2a3a70 !important; }
+  .slot.nacht { background: #1a1825 !important; border-color: #342a50 !important; }
+  .slot-time { color: #f0f0f0 !important; }
+  .slot-name { color: #f0f0f0 !important; }
+  .slot-tag { color: #888 !important; }
+  .slot-note { color: #aaa !important; background: #2c2c2e !important; }
+  .schema-label { color: #888 !important; }
+  .modal-box { background: #1c1c1e !important; border-color: #3a3a3c !important; }
+  .modal-box h3 { color: #f0f0f0 !important; }
+  .modal-box label { color: #aaa !important; }
+  .modal-box input, .modal-box textarea { background: #2c2c2e !important; border-color: #3a3a3c !important; color: #f0f0f0 !important; }
+  .modal-overlay { background: rgba(0,0,0,0.7) !important; }
+  .btn-cancel { background: #2c2c2e !important; color: #f0f0f0 !important; }
+  .btn-save { background: #f0f0f0 !important; color: #111 !important; }
+  .edit-icon { color: #888 !important; }
+}
+header {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e4;
+  padding: 1rem 1.25rem 0.75rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+header h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
+header p { font-size: 13px; color: #666; margin-top: 2px; }
+.card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e8e8e4;
+  padding: 1rem 1.25rem;
+  margin: 1rem 1rem 0;
+}
+.card h2 { font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+.field { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0ec; }
+.field:last-child { border-bottom: none; }
+.field label { font-size: 15px; color: #1a1a1a; font-weight: 400; }
+.field input[type=time],
+.field input[type=number],
+.field input[type=text] {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 15px;
+  color: #1a1a1a;
+  background: #fafafa;
+  text-align: right;
+  -webkit-appearance: none;
+  outline: none;
+}
+.field input[type=time] { width: 120px; }
+.field input[type=number] { width: 70px; }
+.field input[type=text] { width: 130px; }
+.field input:focus { border-color: #5b8fff; background: #fff; }
+.gen-btn {
+  display: block;
+  width: calc(100% - 2rem);
+  margin: 1rem 1rem 0;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.gen-btn:active { opacity: 0.8; }
+.schema-wrap { margin: 1.25rem 1rem 0; }
+.schema-label { font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.slot {
+  background: #fff;
+  border: 1px solid #e8e8e4;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.slot:active { opacity: 0.8; }
+.slot.nu { border-color: #5b8fff; background: #f0f5ff; }
+.slot.volgende { border-color: #c8d8ff; background: #f8faff; }
+.slot.nacht { background: #faf8ff; border-color: #e0d8f0; }
+.slot-top { display: flex; align-items: center; gap: 12px; }
+.slot-time { font-size: 17px; font-weight: 600; min-width: 56px; color: #1a1a1a; letter-spacing: -0.3px; }
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600; flex-shrink: 0;
+}
+.av-a { background: #ddeeff; color: #1a5fbf; }
+.av-b { background: #ddf0e8; color: #1a6b4a; }
+.slot-info { flex: 1; }
+.slot-name { font-size: 15px; font-weight: 500; color: #1a1a1a; }
+.slot-tag { font-size: 12px; color: #aaa; margin-top: 1px; }
+.nu .slot-tag { color: #5b8fff; font-weight: 500; }
+.slot-note {
+  font-size: 13px; color: #666;
+  background: #f5f5f0;
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-top: 8px;
+}
+.edit-icon { font-size: 18px; color: #ccc; flex-shrink: 0; }
+.badge {
+  font-size: 11px; font-weight: 500; padding: 3px 8px;
+  border-radius: 20px; flex-shrink: 0; white-space: nowrap;
+}
+.badge-nu { background: #5b8fff; color: #fff; }
+.badge-volgende { background: #e0e8ff; color: #3355cc; }
+.badge-nacht { background: #ece8f8; color: #6644aa; }
+.empty { text-align: center; color: #aaa; font-size: 15px; padding: 2rem 0; }
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 100;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 1.5rem 1.25rem 2.5rem;
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid #e8e8e4;
+}
+.modal-box h3 { font-size: 17px; font-weight: 600; color: #1a1a1a; margin-bottom: 1.25rem; }
+.modal-box label { font-size: 13px; color: #666; display: block; margin-bottom: 4px; }
+.modal-box input[type=time] {
+  width: 100%; border: 1px solid #ddd; border-radius: 10px;
+  padding: 10px 12px; font-size: 16px; color: #1a1a1a;
+  background: #fafafa; outline: none; margin-bottom: 1rem;
+  -webkit-appearance: none;
+}
+.modal-box textarea {
+  width: 100%; border: 1px solid #ddd; border-radius: 10px;
+  padding: 10px 12px; font-size: 15px; color: #1a1a1a;
+  background: #fafafa; outline: none; resize: none;
+  font-family: inherit; margin-bottom: 1rem; height: 90px;
+}
+.modal-box input:focus, .modal-box textarea:focus { border-color: #5b8fff; background: #fff; }
+.modal-btns { display: flex; gap: 10px; }
+.btn-cancel, .btn-save {
+  flex: 1; border: none; border-radius: 12px;
+  padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer;
+}
+.btn-cancel { background: #f0f0ec; color: #1a1a1a; }
+.btn-save { background: #1a1a1a; color: #fff; }
 </style>
 </head>
 <body>
@@ -136,120 +189,177 @@
 
 <div class="card">
   <h2>Instellingen</h2>
-  <div class="field">
-    <label>Starttijd</label>
-    <input type="time" id="start" value="09:00" />
-  </div>
-  <div class="field">
-    <label>Interval dag (u)</label>
-    <input type="number" id="interval_dag" value="3" min="1" max="8" step="0.5" />
-  </div>
-  <div class="field">
-    <label>Interval nacht (u)</label>
-    <input type="number" id="interval_nacht" value="4" min="1" max="8" step="0.5" />
-  </div>
-  <div class="field">
-    <label>Naam 1</label>
-    <input type="text" id="naam1" value="Teun" placeholder="Naam 1" />
-  </div>
-  <div class="field">
-    <label>Naam 2</label>
-    <input type="text" id="naam2" value="Michelle" placeholder="Naam 2" />
-  </div>
+  <div class="field"><label>Starttijd</label><input type="time" id="start" value="09:00" /></div>
+  <div class="field"><label>Interval dag (uren)</label><input type="number" id="interval_dag" value="3" min="1" max="8" step="0.5" /></div>
+  <div class="field"><label>Interval nacht (uren)</label><input type="number" id="interval_nacht" value="4" min="1" max="8" step="0.5" /></div>
+  <div class="field"><label>Naam 1</label><input type="text" id="naam1" value="Teun" /></div>
+  <div class="field"><label>Naam 2</label><input type="text" id="naam2" value="Michelle" /></div>
 </div>
 
 <button class="gen-btn" onclick="genereer()">Schema genereren</button>
 
 <div class="schema-wrap">
-  <h2 id="schema-titel" style="display:none">Schema van vandaag</h2>
+  <div class="schema-label" id="schema-titel" style="display:none">Schema van vandaag — tik op een voeding om tijd of notitie aan te passen</div>
   <div id="schema"><p class="empty">Vul de instellingen in en druk op genereren.</p></div>
 </div>
 
+<div class="modal-overlay" id="modal" onclick="sluitModal(event)">
+  <div class="modal-box">
+    <h3 id="modal-titel">Voeding aanpassen</h3>
+    <label>Tijdstip</label>
+    <input type="time" id="modal-tijd" />
+    <label>Notitie (optioneel)</label>
+    <textarea id="modal-notitie" placeholder="bijv. slecht gedronken, 80ml, veel gespuugd..."></textarea>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="sluitModal()">Annuleer</button>
+      <button class="btn-save" onclick="slaOp()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  const dagen = ['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag'];
-  const maanden = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
-  const now = new Date();
-  document.getElementById('datum').textContent =
-    dagen[now.getDay()] + ' ' + now.getDate() + ' ' + maanden[now.getMonth()];
+const dagen = ['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag'];
+const maanden = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+const now = new Date();
+document.getElementById('datum').textContent =
+  dagen[now.getDay()] + ' ' + now.getDate() + ' ' + maanden[now.getMonth()];
 
-  function isNacht(mins) {
-    const h = Math.floor(mins / 60) % 24;
-    return h >= 0 && h < 6;
+let slots = [];
+let activeIdx = null;
+
+function isNacht(mins) {
+  const h = Math.floor(mins / 60) % 24;
+  return h >= 0 && h < 6;
+}
+
+function formatTime(mins) {
+  const h = Math.floor(((mins % 1440) + 1440) % 1440 / 60);
+  const m = ((mins % 1440) + 1440) % 1440 % 60;
+  return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+}
+
+function minsFromStr(str) {
+  const [h, m] = str.split(':').map(Number);
+  return h * 60 + m;
+}
+
+function genereer() {
+  const startVal = document.getElementById('start').value;
+  const dagInterval = Math.round(parseFloat(document.getElementById('interval_dag').value) * 60) || 180;
+  const nachtInterval = Math.round(parseFloat(document.getElementById('interval_nacht').value) * 60) || 240;
+  const n1 = document.getElementById('naam1').value || 'Naam 1';
+  const n2 = document.getElementById('naam2').value || 'Naam 2';
+  if (!startVal) return;
+
+  const [sh, sm] = startVal.split(':').map(Number);
+  let currentMins = sh * 60 + sm;
+  const startMins = currentMins;
+  slots = [];
+  let personIdx = 0;
+
+  while (true) {
+    const normMins = ((currentMins % 1440) + 1440) % 1440;
+    slots.push({ mins: normMins, name: personIdx % 2 === 0 ? n1 : n2, notitie: '' });
+    const interval = isNacht(normMins) ? nachtInterval : dagInterval;
+    currentMins += interval;
+    personIdx++;
+    if (currentMins - startMins >= 1440) break;
   }
 
-  function formatTime(mins) {
-    const h = Math.floor(mins / 60) % 24;
-    const m = mins % 60;
-    return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+  renderSlots();
+  document.getElementById('schema-titel').style.display = 'block';
+}
+
+function renderSlots() {
+  const nowMins = now.getHours() * 60 + now.getMinutes();
+  let nextIdx = -1, nowIdx = -1;
+
+  for (let i = 0; i < slots.length; i++) {
+    const diff = slots[i].mins - nowMins;
+    if (diff >= 0 && diff < 45) { nowIdx = i; break; }
+    if (diff >= 45 && nextIdx === -1) nextIdx = i;
   }
-
-  function genereer() {
-    const startVal = document.getElementById('start').value;
-    const dagInterval = Math.round(parseFloat(document.getElementById('interval_dag').value) * 60) || 180;
-    const nachtInterval = Math.round(parseFloat(document.getElementById('interval_nacht').value) * 60) || 240;
-    const n1 = document.getElementById('naam1').value || 'Naam 1';
-    const n2 = document.getElementById('naam2').value || 'Naam 2';
-    if (!startVal) return;
-
-    const [sh, sm] = startVal.split(':').map(Number);
-    let currentMins = sh * 60 + sm;
-    const startMins = currentMins;
-    const slots = [];
-    let personIdx = 0;
-
-    while (true) {
-      const normMins = ((currentMins % 1440) + 1440) % 1440;
-      slots.push({ mins: normMins, name: personIdx % 2 === 0 ? n1 : n2, isNacht: isNacht(normMins) });
-
-      const interval = isNacht(normMins) ? nachtInterval : dagInterval;
-      currentMins += interval;
-      personIdx++;
-
-      if (currentMins - startMins >= 1440) break;
-    }
-
-    const nowMins = now.getHours() * 60 + now.getMinutes();
-    let nextIdx = -1;
-    let nowIdx = -1;
-
+  if (nowIdx === -1 && nextIdx === -1) {
     for (let i = 0; i < slots.length; i++) {
-      const diff = slots[i].mins - nowMins;
-      if (diff >= 0 && diff < 30) { nowIdx = i; break; }
-      if (diff >= 30 && nextIdx === -1) nextIdx = i;
+      if (slots[i].mins > nowMins) { nextIdx = i; break; }
     }
-    if (nowIdx === -1 && nextIdx === -1) {
-      for (let i = 0; i < slots.length; i++) {
-        if (slots[i].mins > nowMins) { nextIdx = i; break; }
-      }
-    }
+  }
 
-    let html = '';
-    slots.forEach((slot, i) => {
-      let cls = slot.isNacht ? ' night' : '';
-      let badge = '';
-      if (i === nowIdx) { cls = ' now'; badge = '<span class="badge badge-now">Nu</span>'; }
-      else if (i === nextIdx) { cls = ' next'; badge = '<span class="badge badge-next">Volgende</span>'; }
-      else if (slot.isNacht) { badge = '<span class="badge badge-night">🌙 nacht</span>'; }
+  const n1 = document.getElementById('naam1').value || 'Naam 1';
+  let html = '';
+  slots.forEach((slot, i) => {
+    const nacht = isNacht(slot.mins);
+    let cls = nacht ? ' nacht' : '';
+    let badge = '';
+    let tagTxt = nacht
+      ? 'Nacht (' + document.getElementById('interval_nacht').value + 'u interval)'
+      : 'Dag (' + document.getElementById('interval_dag').value + 'u interval)';
 
-      const isA = slot.name === n1;
-      const tagTxt = i === nowIdx ? 'Aan de beurt' : slot.isNacht ? 'Nacht (' + document.getElementById('interval_nacht').value + 'u interval)' : 'Dag (' + document.getElementById('interval_dag').value + 'u interval)';
+    if (i === nowIdx) { cls = ' nu'; badge = '<span class="badge badge-nu">Nu</span>'; tagTxt = 'Aan de beurt'; }
+    else if (i === nextIdx) { cls = ' volgende'; badge = '<span class="badge badge-volgende">Volgende</span>'; }
+    else if (nacht) { badge = '<span class="badge badge-nacht">🌙 nacht</span>'; }
 
-      html += `<div class="slot${cls}">
-        <span class="time">${formatTime(slot.mins)}</span>
+    const isA = slot.name === n1;
+    const noteHtml = slot.notitie
+      ? `<div class="slot-note">💬 ${slot.notitie}</div>` : '';
+
+    html += `<div class="slot${cls}" onclick="openModal(${i})">
+      <div class="slot-top">
+        <span class="slot-time">${formatTime(slot.mins)}</span>
         <div class="avatar ${isA ? 'av-a' : 'av-b'}">${slot.name.charAt(0).toUpperCase()}</div>
-        <div class="info">
-          <div class="name">${slot.name}</div>
-          <div class="tag">${tagTxt}</div>
+        <div class="slot-info">
+          <div class="slot-name">${slot.name}</div>
+          <div class="slot-tag">${tagTxt}</div>
         </div>
         ${badge}
-      </div>`;
-    });
+        <span class="edit-icon">✎</span>
+      </div>
+      ${noteHtml}
+    </div>`;
+  });
 
-    document.getElementById('schema').innerHTML = html;
-    document.getElementById('schema-titel').style.display = 'block';
+  document.getElementById('schema').innerHTML = html || '<p class="empty">Geen tijden gevonden.</p>';
+}
+
+function openModal(idx) {
+  activeIdx = idx;
+  const slot = slots[idx];
+  document.getElementById('modal-titel').textContent = slot.name + ' — ' + formatTime(slot.mins);
+  document.getElementById('modal-tijd').value = formatTime(slot.mins);
+  document.getElementById('modal-notitie').value = slot.notitie || '';
+  document.getElementById('modal').classList.add('open');
+}
+
+function sluitModal(e) {
+  if (!e || e.target === document.getElementById('modal')) {
+    document.getElementById('modal').classList.remove('open');
+    activeIdx = null;
+  }
+}
+
+function slaOp() {
+  if (activeIdx === null) return;
+  const nieuweTime = document.getElementById('modal-tijd').value;
+  const notitie = document.getElementById('modal-notitie').value.trim();
+  const oudeTime = slots[activeIdx].mins;
+  const nieuweMins = minsFromStr(nieuweTime);
+  const verschil = nieuweMins - oudeTime;
+
+  slots[activeIdx].notitie = notitie;
+
+  if (verschil !== 0) {
+    slots[activeIdx].mins = nieuweMins;
+    for (let i = activeIdx + 1; i < slots.length; i++) {
+      slots[i].mins = ((slots[i].mins + verschil) % 1440 + 1440) % 1440;
+    }
   }
 
-  genereer();
+  document.getElementById('modal').classList.remove('open');
+  activeIdx = null;
+  renderSlots();
+}
+
+genereer();
 </script>
 </body>
 </html>
