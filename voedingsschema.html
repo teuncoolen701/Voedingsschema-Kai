@@ -31,17 +31,16 @@ body {
   .slot.nacht { background: #1a1825 !important; border-color: #342a50 !important; }
   .slot-time { color: #f0f0f0 !important; }
   .slot-name { color: #f0f0f0 !important; }
-  .slot-tag { color: #888 !important; }
   .slot-note { color: #aaa !important; background: #2c2c2e !important; }
   .schema-label { color: #888 !important; }
   .modal-box { background: #1c1c1e !important; border-color: #3a3a3c !important; }
   .modal-box h3 { color: #f0f0f0 !important; }
   .modal-box label { color: #aaa !important; }
-  .modal-box input, .modal-box textarea { background: #2c2c2e !important; border-color: #3a3a3c !important; color: #f0f0f0 !important; }
-  .modal-overlay { background: rgba(0,0,0,0.7) !important; }
+  .modal-box input, .modal-box textarea, .modal-box select { background: #2c2c2e !important; border-color: #3a3a3c !important; color: #f0f0f0 !important; }
   .btn-cancel { background: #2c2c2e !important; color: #f0f0f0 !important; }
   .btn-save { background: #f0f0f0 !important; color: #111 !important; }
-  .edit-icon { color: #888 !important; }
+  .edit-icon { color: #555 !important; }
+  .sync-bar { background: #1c1c1e !important; border-color: #2c2c2e !important; color: #888 !important; }
 }
 header {
   background: #fff;
@@ -53,6 +52,24 @@ header {
 }
 header h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
 header p { font-size: 13px; color: #666; margin-top: 2px; }
+.sync-bar {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e4;
+  padding: 6px 1.25rem;
+  font-size: 12px;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sync-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #ccc; flex-shrink: 0;
+  transition: background 0.3s;
+}
+.sync-dot.ok { background: #2ecc71; }
+.sync-dot.bezig { background: #f39c12; }
+.sync-dot.fout { background: #e74c3c; }
 .card {
   background: #fff;
   border-radius: 14px;
@@ -120,10 +137,9 @@ header p { font-size: 13px; color: #666; margin-top: 2px; }
 }
 .av-a { background: #ddeeff; color: #1a5fbf; }
 .av-b { background: #ddf0e8; color: #1a6b4a; }
+.av-c { background: #fdeedd; color: #b35a00; }
 .slot-info { flex: 1; }
 .slot-name { font-size: 15px; font-weight: 500; color: #1a1a1a; }
-.slot-tag { font-size: 12px; color: #aaa; margin-top: 1px; }
-.nu .slot-tag { color: #5b8fff; font-weight: 500; }
 .slot-note {
   font-size: 13px; color: #666;
   background: #f5f5f0;
@@ -131,7 +147,7 @@ header p { font-size: 13px; color: #666; margin-top: 2px; }
   padding: 6px 10px;
   margin-top: 8px;
 }
-.edit-icon { font-size: 18px; color: #ccc; flex-shrink: 0; }
+.edit-icon { font-size: 16px; color: #ccc; flex-shrink: 0; }
 .badge {
   font-size: 11px; font-weight: 500; padding: 3px 8px;
   border-radius: 20px; flex-shrink: 0; white-space: nowrap;
@@ -158,21 +174,24 @@ header p { font-size: 13px; color: #666; margin-top: 2px; }
   border: 1px solid #e8e8e4;
 }
 .modal-box h3 { font-size: 17px; font-weight: 600; color: #1a1a1a; margin-bottom: 1.25rem; }
-.modal-box label { font-size: 13px; color: #666; display: block; margin-bottom: 4px; }
-.modal-box input[type=time] {
+.modal-box label { font-size: 13px; color: #666; display: block; margin-bottom: 4px; margin-top: 12px; }
+.modal-box label:first-of-type { margin-top: 0; }
+.modal-box input[type=time],
+.modal-box input[type=text],
+.modal-box select {
   width: 100%; border: 1px solid #ddd; border-radius: 10px;
   padding: 10px 12px; font-size: 16px; color: #1a1a1a;
-  background: #fafafa; outline: none; margin-bottom: 1rem;
-  -webkit-appearance: none;
+  background: #fafafa; outline: none;
+  -webkit-appearance: none; font-family: inherit;
 }
 .modal-box textarea {
   width: 100%; border: 1px solid #ddd; border-radius: 10px;
   padding: 10px 12px; font-size: 15px; color: #1a1a1a;
   background: #fafafa; outline: none; resize: none;
-  font-family: inherit; margin-bottom: 1rem; height: 90px;
+  font-family: inherit; height: 80px;
 }
-.modal-box input:focus, .modal-box textarea:focus { border-color: #5b8fff; background: #fff; }
-.modal-btns { display: flex; gap: 10px; }
+.modal-box input:focus, .modal-box textarea:focus, .modal-box select:focus { border-color: #5b8fff; background: #fff; }
+.modal-btns { display: flex; gap: 10px; margin-top: 1.25rem; }
 .btn-cancel, .btn-save {
   flex: 1; border: none; border-radius: 12px;
   padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer;
@@ -186,6 +205,10 @@ header p { font-size: 13px; color: #666; margin-top: 2px; }
   <h1>🍼 Voedingsschema</h1>
   <p id="datum">Vandaag</p>
 </header>
+<div class="sync-bar">
+  <div class="sync-dot" id="sync-dot"></div>
+  <span id="sync-tekst">Verbinden...</span>
+</div>
 
 <div class="card">
   <h2>Instellingen</h2>
@@ -199,17 +222,19 @@ header p { font-size: 13px; color: #666; margin-top: 2px; }
 <button class="gen-btn" onclick="genereer()">Schema genereren</button>
 
 <div class="schema-wrap">
-  <div class="schema-label" id="schema-titel" style="display:none">Schema van vandaag — tik op een voeding om tijd of notitie aan te passen</div>
+  <div class="schema-label" id="schema-titel" style="display:none">Schema van vandaag — tik om aan te passen</div>
   <div id="schema"><p class="empty">Vul de instellingen in en druk op genereren.</p></div>
 </div>
 
-<div class="modal-overlay" id="modal" onclick="sluitModal(event)">
+<div class="modal-overlay" id="modal" onclick="sluitModalBuiten(event)">
   <div class="modal-box">
     <h3 id="modal-titel">Voeding aanpassen</h3>
     <label>Tijdstip</label>
     <input type="time" id="modal-tijd" />
+    <label>Naam</label>
+    <select id="modal-naam"></select>
     <label>Notitie (optioneel)</label>
-    <textarea id="modal-notitie" placeholder="bijv. slecht gedronken, 80ml, veel gespuugd..."></textarea>
+    <textarea id="modal-notitie" placeholder="bijv. 80ml, veel gespuugd..."></textarea>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="sluitModal()">Annuleer</button>
       <button class="btn-save" onclick="slaOp()">Opslaan</button>
@@ -218,6 +243,9 @@ header p { font-size: 13px; color: #666; margin-top: 2px; }
 </div>
 
 <script>
+const SUPABASE_URL = 'https://buvxwrhsikldebepxvvc.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1dnh3cmhzaWtsZGViZXB4dnZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzNzIyMTgsImV4cCI6MjEwMTk0ODIxOH0.LgRk6DF9CNPngzDoOKOUwjs86hc1qQwR_Kvp_DpVJ2W';
+
 const dagen = ['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag'];
 const maanden = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
 const now = new Date();
@@ -226,21 +254,96 @@ document.getElementById('datum').textContent =
 
 let slots = [];
 let activeIdx = null;
+let pollingInterval = null;
+let lastUpdated = null;
+
+function setSyncStatus(status, tekst) {
+  const dot = document.getElementById('sync-dot');
+  const txt = document.getElementById('sync-tekst');
+  dot.className = 'sync-dot ' + status;
+  txt.textContent = tekst;
+}
+
+async function laadVanServer() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/schema_data?id=eq.huidig&select=data,updated_at`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    const rows = await res.json();
+    if (rows && rows.length && rows[0].data && rows[0].data.slots) {
+      const serverUpdated = rows[0].updated_at;
+      if (serverUpdated !== lastUpdated) {
+        lastUpdated = serverUpdated;
+        const d = rows[0].data;
+        slots = d.slots;
+        if (d.naam1) document.getElementById('naam1').value = d.naam1;
+        if (d.naam2) document.getElementById('naam2').value = d.naam2;
+        if (d.start) document.getElementById('start').value = d.start;
+        if (d.interval_dag) document.getElementById('interval_dag').value = d.interval_dag;
+        if (d.interval_nacht) document.getElementById('interval_nacht').value = d.interval_nacht;
+        renderSlots();
+        document.getElementById('schema-titel').style.display = 'block';
+      }
+      setSyncStatus('ok', 'Gesynchroniseerd');
+    } else {
+      setSyncStatus('ok', 'Verbonden — nog geen schema');
+    }
+  } catch(e) {
+    setSyncStatus('fout', 'Geen verbinding');
+  }
+}
+
+async function slaOpServer() {
+  setSyncStatus('bezig', 'Opslaan...');
+  try {
+    const data = {
+      slots,
+      naam1: document.getElementById('naam1').value,
+      naam2: document.getElementById('naam2').value,
+      start: document.getElementById('start').value,
+      interval_dag: document.getElementById('interval_dag').value,
+      interval_nacht: document.getElementById('interval_nacht').value,
+    };
+    await fetch(`${SUPABASE_URL}/rest/v1/schema_data?id=eq.huidig`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ data, updated_at: new Date().toISOString() })
+    });
+    lastUpdated = null;
+    setSyncStatus('ok', 'Opgeslagen & gesynchroniseerd');
+  } catch(e) {
+    setSyncStatus('fout', 'Opslaan mislukt');
+  }
+}
 
 function isNacht(mins) {
-  const h = Math.floor(mins / 60) % 24;
+  const h = Math.floor(((mins % 1440) + 1440) % 1440 / 60);
   return h >= 0 && h < 6;
 }
 
 function formatTime(mins) {
-  const h = Math.floor(((mins % 1440) + 1440) % 1440 / 60);
-  const m = ((mins % 1440) + 1440) % 1440 % 60;
+  const norm = ((mins % 1440) + 1440) % 1440;
+  const h = Math.floor(norm / 60);
+  const m = norm % 60;
   return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
 }
 
 function minsFromStr(str) {
   const [h, m] = str.split(':').map(Number);
   return h * 60 + m;
+}
+
+function avatarKlasse(naam) {
+  const n1 = document.getElementById('naam1').value || 'Naam 1';
+  const n2 = document.getElementById('naam2').value || 'Naam 2';
+  if (naam === n1) return 'av-a';
+  if (naam === n2) return 'av-b';
+  return 'av-c';
 }
 
 function genereer() {
@@ -268,6 +371,7 @@ function genereer() {
 
   renderSlots();
   document.getElementById('schema-titel').style.display = 'block';
+  slaOpServer();
 }
 
 function renderSlots() {
@@ -285,31 +389,26 @@ function renderSlots() {
     }
   }
 
-  const n1 = document.getElementById('naam1').value || 'Naam 1';
   let html = '';
   slots.forEach((slot, i) => {
     const nacht = isNacht(slot.mins);
     let cls = nacht ? ' nacht' : '';
     let badge = '';
-    let tagTxt = nacht
-      ? 'Nacht (' + document.getElementById('interval_nacht').value + 'u interval)'
-      : 'Dag (' + document.getElementById('interval_dag').value + 'u interval)';
 
-    if (i === nowIdx) { cls = ' nu'; badge = '<span class="badge badge-nu">Nu</span>'; tagTxt = 'Aan de beurt'; }
+    if (i === nowIdx) { cls = ' nu'; badge = '<span class="badge badge-nu">Nu</span>'; }
     else if (i === nextIdx) { cls = ' volgende'; badge = '<span class="badge badge-volgende">Volgende</span>'; }
-    else if (nacht) { badge = '<span class="badge badge-nacht">🌙 nacht</span>'; }
+    else if (nacht) { badge = '<span class="badge badge-nacht">🌙</span>'; }
 
-    const isA = slot.name === n1;
+    const avKls = avatarKlasse(slot.name);
     const noteHtml = slot.notitie
       ? `<div class="slot-note">💬 ${slot.notitie}</div>` : '';
 
     html += `<div class="slot${cls}" onclick="openModal(${i})">
       <div class="slot-top">
         <span class="slot-time">${formatTime(slot.mins)}</span>
-        <div class="avatar ${isA ? 'av-a' : 'av-b'}">${slot.name.charAt(0).toUpperCase()}</div>
+        <div class="avatar ${avKls}">${slot.name.charAt(0).toUpperCase()}</div>
         <div class="slot-info">
           <div class="slot-name">${slot.name}</div>
-          <div class="slot-tag">${tagTxt}</div>
         </div>
         ${badge}
         <span class="edit-icon">✎</span>
@@ -324,28 +423,41 @@ function renderSlots() {
 function openModal(idx) {
   activeIdx = idx;
   const slot = slots[idx];
-  document.getElementById('modal-titel').textContent = slot.name + ' — ' + formatTime(slot.mins);
+  const n1 = document.getElementById('naam1').value || 'Naam 1';
+  const n2 = document.getElementById('naam2').value || 'Naam 2';
+
+  document.getElementById('modal-titel').textContent = formatTime(slot.mins) + ' — aanpassen';
   document.getElementById('modal-tijd').value = formatTime(slot.mins);
   document.getElementById('modal-notitie').value = slot.notitie || '';
+
+  const sel = document.getElementById('modal-naam');
+  sel.innerHTML = `<option value="${n1}" ${slot.name===n1?'selected':''}>${n1}</option>
+                   <option value="${n2}" ${slot.name===n2?'selected':''}>${n2}</option>`;
+
   document.getElementById('modal').classList.add('open');
 }
 
-function sluitModal(e) {
-  if (!e || e.target === document.getElementById('modal')) {
-    document.getElementById('modal').classList.remove('open');
-    activeIdx = null;
-  }
+function sluitModal() {
+  document.getElementById('modal').classList.remove('open');
+  activeIdx = null;
 }
 
-function slaOp() {
+function sluitModalBuiten(e) {
+  if (e.target === document.getElementById('modal')) sluitModal();
+}
+
+async function slaOp() {
   if (activeIdx === null) return;
   const nieuweTime = document.getElementById('modal-tijd').value;
+  const nieuweNaam = document.getElementById('modal-naam').value;
   const notitie = document.getElementById('modal-notitie').value.trim();
+
   const oudeTime = slots[activeIdx].mins;
   const nieuweMins = minsFromStr(nieuweTime);
   const verschil = nieuweMins - oudeTime;
 
   slots[activeIdx].notitie = notitie;
+  slots[activeIdx].name = nieuweNaam;
 
   if (verschil !== 0) {
     slots[activeIdx].mins = nieuweMins;
@@ -354,12 +466,13 @@ function slaOp() {
     }
   }
 
-  document.getElementById('modal').classList.remove('open');
-  activeIdx = null;
+  sluitModal();
   renderSlots();
+  await slaOpServer();
 }
 
-genereer();
+laadVanServer();
+pollingInterval = setInterval(laadVanServer, 10000);
 </script>
 </body>
 </html>
