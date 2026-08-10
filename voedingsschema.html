@@ -39,7 +39,6 @@ body {
   .btn-save { background: #f0f0f0 !important; color: #111 !important; }
   .edit-icon { color: #555 !important; }
   .sync-bar { background: #1c1c1e !important; border-color: #2c2c2e !important; color: #888 !important; }
-  .loader { color: #888 !important; }
 }
 header {
   background: #fff; border-bottom: 1px solid #e8e8e4;
@@ -79,7 +78,6 @@ header p { font-size: 13px; color: #666; margin-top: 2px; }
 .gen-btn:active { opacity: 0.8; }
 .schema-wrap { margin: 1.25rem 1rem 0; }
 .schema-label { font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
-.loader { text-align: center; color: #aaa; font-size: 14px; padding: 2rem 0; }
 .slot {
   background: #fff; border: 1px solid #e8e8e4; border-radius: 12px;
   padding: 12px 14px; margin-bottom: 6px; cursor: pointer;
@@ -149,7 +147,7 @@ header p { font-size: 13px; color: #666; margin-top: 2px; }
 
 <div class="schema-wrap">
   <div class="schema-label" id="schema-titel" style="display:none">Schema van vandaag — tik om aan te passen</div>
-  <div id="schema"><p class="loader">Schema laden...</p></div>
+  <div id="schema"><p class="empty">Schema wordt geladen...</p></div>
 </div>
 
 <div class="modal-overlay" id="modal" onclick="sluitModalBuiten(event)">
@@ -180,6 +178,7 @@ document.getElementById('datum').textContent =
 
 let slots = [];
 let activeIdx = null;
+let isSaving = false;
 
 function setSyncStatus(status, tekst) {
   document.getElementById('sync-dot').className = 'sync-dot ' + status;
@@ -187,6 +186,7 @@ function setSyncStatus(status, tekst) {
 }
 
 async function laadVanServer() {
+  if (isSaving) return;
   try {
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/schema_data?id=eq.huidig&select=data`,
@@ -209,12 +209,12 @@ async function laadVanServer() {
       setSyncStatus('ok', 'Verbonden');
     }
   } catch(e) {
-    document.getElementById('schema').innerHTML = '<p class="empty">Kon schema niet laden. Controleer je verbinding.</p>';
     setSyncStatus('fout', 'Geen verbinding');
   }
 }
 
 async function slaOpServer() {
+  isSaving = true;
   setSyncStatus('bezig', 'Opslaan...');
   try {
     const data = {
@@ -243,6 +243,7 @@ async function slaOpServer() {
   } catch(e) {
     setSyncStatus('fout', 'Opslaan mislukt');
   }
+  isSaving = false;
 }
 
 function isNacht(mins) {
@@ -304,7 +305,6 @@ function renderSlots() {
   }
 
   const n1 = document.getElementById('naam1').value || 'Naam 1';
-  const n2 = document.getElementById('naam2').value || 'Naam 2';
 
   let html = '';
   slots.forEach((slot, i) => {
