@@ -11,10 +11,8 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #f5f5f0;
-  color: #1a1a1a;
-  min-height: 100vh;
-  padding-bottom: 3rem;
+  background: #f5f5f0; color: #1a1a1a;
+  min-height: 100vh; padding-bottom: 3rem;
 }
 @media (prefers-color-scheme: dark) {
   body { background: #111; color: #f0f0f0; }
@@ -41,87 +39,50 @@ body {
   .btn-save { background: #f0f0f0 !important; color: #111 !important; }
   .edit-icon { color: #555 !important; }
   .sync-bar { background: #1c1c1e !important; border-color: #2c2c2e !important; color: #888 !important; }
+  .loader { color: #888 !important; }
 }
 header {
-  background: #fff;
-  border-bottom: 1px solid #e8e8e4;
-  padding: 1rem 1.25rem 0.75rem;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  background: #fff; border-bottom: 1px solid #e8e8e4;
+  padding: 1rem 1.25rem 0.75rem; position: sticky; top: 0; z-index: 10;
 }
 header h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
 header p { font-size: 13px; color: #666; margin-top: 2px; }
 .sync-bar {
-  background: #fff;
-  border-bottom: 1px solid #e8e8e4;
-  padding: 6px 1.25rem;
-  font-size: 12px;
-  color: #888;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  background: #fff; border-bottom: 1px solid #e8e8e4;
+  padding: 6px 1.25rem; font-size: 12px; color: #888;
+  display: flex; align-items: center; gap: 6px;
 }
-.sync-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: #ccc; flex-shrink: 0;
-  transition: background 0.3s;
-}
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #ccc; flex-shrink: 0; transition: background 0.3s; }
 .sync-dot.ok { background: #2ecc71; }
 .sync-dot.bezig { background: #f39c12; }
 .sync-dot.fout { background: #e74c3c; }
-.card {
-  background: #fff;
-  border-radius: 14px;
-  border: 1px solid #e8e8e4;
-  padding: 1rem 1.25rem;
-  margin: 1rem 1rem 0;
-}
+.card { background: #fff; border-radius: 14px; border: 1px solid #e8e8e4; padding: 1rem 1.25rem; margin: 1rem 1rem 0; }
 .card h2 { font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
 .field { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0ec; }
 .field:last-child { border-bottom: none; }
 .field label { font-size: 15px; color: #1a1a1a; font-weight: 400; }
-.field input[type=time],
-.field input[type=number],
-.field input[type=text] {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 6px 10px;
-  font-size: 15px;
-  color: #1a1a1a;
-  background: #fafafa;
-  text-align: right;
-  -webkit-appearance: none;
-  outline: none;
+.field input[type=time], .field input[type=number], .field input[type=text] {
+  border: 1px solid #ddd; border-radius: 8px; padding: 6px 10px;
+  font-size: 15px; color: #1a1a1a; background: #fafafa;
+  text-align: right; -webkit-appearance: none; outline: none;
 }
 .field input[type=time] { width: 120px; }
 .field input[type=number] { width: 70px; }
 .field input[type=text] { width: 130px; }
 .field input:focus { border-color: #5b8fff; background: #fff; }
 .gen-btn {
-  display: block;
-  width: calc(100% - 2rem);
-  margin: 1rem 1rem 0;
-  background: #1a1a1a;
-  color: #fff;
-  border: none;
-  border-radius: 14px;
-  padding: 15px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
+  display: block; width: calc(100% - 2rem); margin: 1rem 1rem 0;
+  background: #1a1a1a; color: #fff; border: none; border-radius: 14px;
+  padding: 15px; font-size: 16px; font-weight: 600; cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 .gen-btn:active { opacity: 0.8; }
 .schema-wrap { margin: 1.25rem 1rem 0; }
 .schema-label { font-size: 12px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.loader { text-align: center; color: #aaa; font-size: 14px; padding: 2rem 0; }
 .slot {
-  background: #fff;
-  border: 1px solid #e8e8e4;
-  border-radius: 12px;
-  padding: 12px 14px;
-  margin-bottom: 6px;
-  cursor: pointer;
+  background: #fff; border: 1px solid #e8e8e4; border-radius: 12px;
+  padding: 12px 14px; margin-bottom: 6px; cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 .slot:active { opacity: 0.8; }
@@ -130,72 +91,37 @@ header p { font-size: 13px; color: #666; margin-top: 2px; }
 .slot.nacht { background: #faf8ff; border-color: #e0d8f0; }
 .slot-top { display: flex; align-items: center; gap: 12px; }
 .slot-time { font-size: 17px; font-weight: 600; min-width: 56px; color: #1a1a1a; letter-spacing: -0.3px; }
-.avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 600; flex-shrink: 0;
-}
+.avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; flex-shrink: 0; }
 .av-a { background: #ddeeff; color: #1a5fbf; }
 .av-b { background: #ddf0e8; color: #1a6b4a; }
-.av-c { background: #fdeedd; color: #b35a00; }
 .slot-info { flex: 1; }
 .slot-name { font-size: 15px; font-weight: 500; color: #1a1a1a; }
-.slot-note {
-  font-size: 13px; color: #666;
-  background: #f5f5f0;
-  border-radius: 8px;
-  padding: 6px 10px;
-  margin-top: 8px;
-}
+.slot-note { font-size: 13px; color: #666; background: #f5f5f0; border-radius: 8px; padding: 6px 10px; margin-top: 8px; }
 .edit-icon { font-size: 16px; color: #ccc; flex-shrink: 0; }
-.badge {
-  font-size: 11px; font-weight: 500; padding: 3px 8px;
-  border-radius: 20px; flex-shrink: 0; white-space: nowrap;
-}
+.badge { font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 20px; flex-shrink: 0; white-space: nowrap; }
 .badge-nu { background: #5b8fff; color: #fff; }
 .badge-volgende { background: #e0e8ff; color: #3355cc; }
 .badge-nacht { background: #ece8f8; color: #6644aa; }
 .empty { text-align: center; color: #aaa; font-size: 15px; padding: 2rem 0; }
-.modal-overlay {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.45);
-  z-index: 100;
-  align-items: flex-end;
-  justify-content: center;
-}
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 100; align-items: flex-end; justify-content: center; }
 .modal-overlay.open { display: flex; }
-.modal-box {
-  background: #fff;
-  border-radius: 20px 20px 0 0;
-  padding: 1.5rem 1.25rem 2.5rem;
-  width: 100%;
-  max-width: 500px;
-  border: 1px solid #e8e8e4;
-}
+.modal-box { background: #fff; border-radius: 20px 20px 0 0; padding: 1.5rem 1.25rem 2.5rem; width: 100%; max-width: 500px; }
 .modal-box h3 { font-size: 17px; font-weight: 600; color: #1a1a1a; margin-bottom: 1.25rem; }
 .modal-box label { font-size: 13px; color: #666; display: block; margin-bottom: 4px; margin-top: 12px; }
 .modal-box label:first-of-type { margin-top: 0; }
-.modal-box input[type=time],
-.modal-box input[type=text],
-.modal-box select {
+.modal-box input[type=time], .modal-box select {
   width: 100%; border: 1px solid #ddd; border-radius: 10px;
   padding: 10px 12px; font-size: 16px; color: #1a1a1a;
-  background: #fafafa; outline: none;
-  -webkit-appearance: none; font-family: inherit;
+  background: #fafafa; outline: none; -webkit-appearance: none; font-family: inherit;
 }
 .modal-box textarea {
   width: 100%; border: 1px solid #ddd; border-radius: 10px;
   padding: 10px 12px; font-size: 15px; color: #1a1a1a;
-  background: #fafafa; outline: none; resize: none;
-  font-family: inherit; height: 80px;
+  background: #fafafa; outline: none; resize: none; font-family: inherit; height: 80px;
 }
 .modal-box input:focus, .modal-box textarea:focus, .modal-box select:focus { border-color: #5b8fff; background: #fff; }
 .modal-btns { display: flex; gap: 10px; margin-top: 1.25rem; }
-.btn-cancel, .btn-save {
-  flex: 1; border: none; border-radius: 12px;
-  padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer;
-}
+.btn-cancel, .btn-save { flex: 1; border: none; border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer; }
 .btn-cancel { background: #f0f0ec; color: #1a1a1a; }
 .btn-save { background: #1a1a1a; color: #fff; }
 </style>
@@ -207,7 +133,7 @@ header p { font-size: 13px; color: #666; margin-top: 2px; }
 </header>
 <div class="sync-bar">
   <div class="sync-dot" id="sync-dot"></div>
-  <span id="sync-tekst">Verbinden...</span>
+  <span id="sync-tekst">Laden...</span>
 </div>
 
 <div class="card">
@@ -219,11 +145,11 @@ header p { font-size: 13px; color: #666; margin-top: 2px; }
   <div class="field"><label>Naam 2</label><input type="text" id="naam2" value="Michelle" /></div>
 </div>
 
-<button class="gen-btn" onclick="genereer()">Schema genereren</button>
+<button class="gen-btn" onclick="genereer()">Nieuw schema genereren</button>
 
 <div class="schema-wrap">
   <div class="schema-label" id="schema-titel" style="display:none">Schema van vandaag — tik om aan te passen</div>
-  <div id="schema"><p class="empty">Vul de instellingen in en druk op genereren.</p></div>
+  <div id="schema"><p class="loader">Schema laden...</p></div>
 </div>
 
 <div class="modal-overlay" id="modal" onclick="sluitModalBuiten(event)">
@@ -254,41 +180,36 @@ document.getElementById('datum').textContent =
 
 let slots = [];
 let activeIdx = null;
-let pollingInterval = null;
-let lastUpdated = null;
 
 function setSyncStatus(status, tekst) {
-  const dot = document.getElementById('sync-dot');
-  const txt = document.getElementById('sync-tekst');
-  dot.className = 'sync-dot ' + status;
-  txt.textContent = tekst;
+  document.getElementById('sync-dot').className = 'sync-dot ' + status;
+  document.getElementById('sync-tekst').textContent = tekst;
 }
 
 async function laadVanServer() {
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/schema_data?id=eq.huidig&select=data,updated_at`, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-    });
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/schema_data?id=eq.huidig&select=data`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+    );
     const rows = await res.json();
-    if (rows && rows.length && rows[0].data && rows[0].data.slots) {
-      const serverUpdated = rows[0].updated_at;
-      if (serverUpdated !== lastUpdated) {
-        lastUpdated = serverUpdated;
-        const d = rows[0].data;
-        slots = d.slots;
-        if (d.naam1) document.getElementById('naam1').value = d.naam1;
-        if (d.naam2) document.getElementById('naam2').value = d.naam2;
-        if (d.start) document.getElementById('start').value = d.start;
-        if (d.interval_dag) document.getElementById('interval_dag').value = d.interval_dag;
-        if (d.interval_nacht) document.getElementById('interval_nacht').value = d.interval_nacht;
-        renderSlots();
-        document.getElementById('schema-titel').style.display = 'block';
-      }
+    if (rows && rows.length && rows[0].data && rows[0].data.slots && rows[0].data.slots.length) {
+      const d = rows[0].data;
+      slots = d.slots;
+      if (d.naam1) document.getElementById('naam1').value = d.naam1;
+      if (d.naam2) document.getElementById('naam2').value = d.naam2;
+      if (d.start) document.getElementById('start').value = d.start;
+      if (d.interval_dag) document.getElementById('interval_dag').value = d.interval_dag;
+      if (d.interval_nacht) document.getElementById('interval_nacht').value = d.interval_nacht;
+      document.getElementById('schema-titel').style.display = 'block';
+      renderSlots();
       setSyncStatus('ok', 'Gesynchroniseerd');
     } else {
-      setSyncStatus('ok', 'Verbonden — nog geen schema');
+      document.getElementById('schema').innerHTML = '<p class="empty">Nog geen schema — druk op "Nieuw schema genereren".</p>';
+      setSyncStatus('ok', 'Verbonden');
     }
   } catch(e) {
+    document.getElementById('schema').innerHTML = '<p class="empty">Kon schema niet laden. Controleer je verbinding.</p>';
     setSyncStatus('fout', 'Geen verbinding');
   }
 }
@@ -304,7 +225,7 @@ async function slaOpServer() {
       interval_dag: document.getElementById('interval_dag').value,
       interval_nacht: document.getElementById('interval_nacht').value,
     };
-    await fetch(`${SUPABASE_URL}/rest/v1/schema_data?id=eq.huidig`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/schema_data?id=eq.huidig`, {
       method: 'PATCH',
       headers: {
         'apikey': SUPABASE_KEY,
@@ -314,8 +235,11 @@ async function slaOpServer() {
       },
       body: JSON.stringify({ data, updated_at: new Date().toISOString() })
     });
-    lastUpdated = null;
-    setSyncStatus('ok', 'Opgeslagen & gesynchroniseerd');
+    if (res.ok) {
+      setSyncStatus('ok', 'Opgeslagen');
+    } else {
+      setSyncStatus('fout', 'Opslaan mislukt');
+    }
   } catch(e) {
     setSyncStatus('fout', 'Opslaan mislukt');
   }
@@ -328,22 +252,12 @@ function isNacht(mins) {
 
 function formatTime(mins) {
   const norm = ((mins % 1440) + 1440) % 1440;
-  const h = Math.floor(norm / 60);
-  const m = norm % 60;
-  return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+  return String(Math.floor(norm / 60)).padStart(2,'0') + ':' + String(norm % 60).padStart(2,'0');
 }
 
 function minsFromStr(str) {
   const [h, m] = str.split(':').map(Number);
   return h * 60 + m;
-}
-
-function avatarKlasse(naam) {
-  const n1 = document.getElementById('naam1').value || 'Naam 1';
-  const n2 = document.getElementById('naam2').value || 'Naam 2';
-  if (naam === n1) return 'av-a';
-  if (naam === n2) return 'av-b';
-  return 'av-c';
 }
 
 function genereer() {
@@ -369,8 +283,8 @@ function genereer() {
     if (currentMins - startMins >= 1440) break;
   }
 
-  renderSlots();
   document.getElementById('schema-titel').style.display = 'block';
+  renderSlots();
   slaOpServer();
 }
 
@@ -389,90 +303,14 @@ function renderSlots() {
     }
   }
 
+  const n1 = document.getElementById('naam1').value || 'Naam 1';
+  const n2 = document.getElementById('naam2').value || 'Naam 2';
+
   let html = '';
   slots.forEach((slot, i) => {
     const nacht = isNacht(slot.mins);
     let cls = nacht ? ' nacht' : '';
     let badge = '';
-
     if (i === nowIdx) { cls = ' nu'; badge = '<span class="badge badge-nu">Nu</span>'; }
     else if (i === nextIdx) { cls = ' volgende'; badge = '<span class="badge badge-volgende">Volgende</span>'; }
-    else if (nacht) { badge = '<span class="badge badge-nacht">🌙</span>'; }
-
-    const avKls = avatarKlasse(slot.name);
-    const noteHtml = slot.notitie
-      ? `<div class="slot-note">💬 ${slot.notitie}</div>` : '';
-
-    html += `<div class="slot${cls}" onclick="openModal(${i})">
-      <div class="slot-top">
-        <span class="slot-time">${formatTime(slot.mins)}</span>
-        <div class="avatar ${avKls}">${slot.name.charAt(0).toUpperCase()}</div>
-        <div class="slot-info">
-          <div class="slot-name">${slot.name}</div>
-        </div>
-        ${badge}
-        <span class="edit-icon">✎</span>
-      </div>
-      ${noteHtml}
-    </div>`;
-  });
-
-  document.getElementById('schema').innerHTML = html || '<p class="empty">Geen tijden gevonden.</p>';
-}
-
-function openModal(idx) {
-  activeIdx = idx;
-  const slot = slots[idx];
-  const n1 = document.getElementById('naam1').value || 'Naam 1';
-  const n2 = document.getElementById('naam2').value || 'Naam 2';
-
-  document.getElementById('modal-titel').textContent = formatTime(slot.mins) + ' — aanpassen';
-  document.getElementById('modal-tijd').value = formatTime(slot.mins);
-  document.getElementById('modal-notitie').value = slot.notitie || '';
-
-  const sel = document.getElementById('modal-naam');
-  sel.innerHTML = `<option value="${n1}" ${slot.name===n1?'selected':''}>${n1}</option>
-                   <option value="${n2}" ${slot.name===n2?'selected':''}>${n2}</option>`;
-
-  document.getElementById('modal').classList.add('open');
-}
-
-function sluitModal() {
-  document.getElementById('modal').classList.remove('open');
-  activeIdx = null;
-}
-
-function sluitModalBuiten(e) {
-  if (e.target === document.getElementById('modal')) sluitModal();
-}
-
-async function slaOp() {
-  if (activeIdx === null) return;
-  const nieuweTime = document.getElementById('modal-tijd').value;
-  const nieuweNaam = document.getElementById('modal-naam').value;
-  const notitie = document.getElementById('modal-notitie').value.trim();
-
-  const oudeTime = slots[activeIdx].mins;
-  const nieuweMins = minsFromStr(nieuweTime);
-  const verschil = nieuweMins - oudeTime;
-
-  slots[activeIdx].notitie = notitie;
-  slots[activeIdx].name = nieuweNaam;
-
-  if (verschil !== 0) {
-    slots[activeIdx].mins = nieuweMins;
-    for (let i = activeIdx + 1; i < slots.length; i++) {
-      slots[i].mins = ((slots[i].mins + verschil) % 1440 + 1440) % 1440;
-    }
-  }
-
-  sluitModal();
-  renderSlots();
-  await slaOpServer();
-}
-
-laadVanServer();
-pollingInterval = setInterval(laadVanServer, 10000);
-</script>
-</body>
-</html>
+    else if (nacht) { badge = '<span class="badge
