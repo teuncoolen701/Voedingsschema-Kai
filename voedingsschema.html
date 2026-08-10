@@ -313,4 +313,72 @@ function renderSlots() {
     let badge = '';
     if (i === nowIdx) { cls = ' nu'; badge = '<span class="badge badge-nu">Nu</span>'; }
     else if (i === nextIdx) { cls = ' volgende'; badge = '<span class="badge badge-volgende">Volgende</span>'; }
-    else if (nacht) { badge = '<span class="badge
+    else if (nacht) { badge = '<span class="badge badge-nacht">🌙</span>'; }
+
+    const avKls = slot.name === n1 ? 'av-a' : 'av-b';
+    const noteHtml = slot.notitie ? `<div class="slot-note">💬 ${slot.notitie}</div>` : '';
+
+    html += `<div class="slot${cls}" onclick="openModal(${i})">
+      <div class="slot-top">
+        <span class="slot-time">${formatTime(slot.mins)}</span>
+        <div class="avatar ${avKls}">${slot.name.charAt(0).toUpperCase()}</div>
+        <div class="slot-info"><div class="slot-name">${slot.name}</div></div>
+        ${badge}
+        <span class="edit-icon">✎</span>
+      </div>
+      ${noteHtml}
+    </div>`;
+  });
+
+  document.getElementById('schema').innerHTML = html || '<p class="empty">Geen tijden gevonden.</p>';
+}
+
+function openModal(idx) {
+  activeIdx = idx;
+  const slot = slots[idx];
+  const n1 = document.getElementById('naam1').value || 'Naam 1';
+  const n2 = document.getElementById('naam2').value || 'Naam 2';
+  document.getElementById('modal-titel').textContent = formatTime(slot.mins) + ' — aanpassen';
+  document.getElementById('modal-tijd').value = formatTime(slot.mins);
+  document.getElementById('modal-notitie').value = slot.notitie || '';
+  const sel = document.getElementById('modal-naam');
+  sel.innerHTML = `<option value="${n1}" ${slot.name===n1?'selected':''}>${n1}</option>
+                   <option value="${n2}" ${slot.name===n2?'selected':''}>${n2}</option>`;
+  document.getElementById('modal').classList.add('open');
+}
+
+function sluitModal() {
+  document.getElementById('modal').classList.remove('open');
+  activeIdx = null;
+}
+
+function sluitModalBuiten(e) {
+  if (e.target === document.getElementById('modal')) sluitModal();
+}
+
+async function slaOp() {
+  if (activeIdx === null) return;
+  const nieuweTime = document.getElementById('modal-tijd').value;
+  const nieuweNaam = document.getElementById('modal-naam').value;
+  const notitie = document.getElementById('modal-notitie').value.trim();
+  const verschil = minsFromStr(nieuweTime) - slots[activeIdx].mins;
+
+  slots[activeIdx].notitie = notitie;
+  slots[activeIdx].name = nieuweNaam;
+  if (verschil !== 0) {
+    slots[activeIdx].mins = minsFromStr(nieuweTime);
+    for (let i = activeIdx + 1; i < slots.length; i++) {
+      slots[i].mins = ((slots[i].mins + verschil) % 1440 + 1440) % 1440;
+    }
+  }
+
+  sluitModal();
+  renderSlots();
+  await slaOpServer();
+}
+
+laadVanServer();
+setInterval(laadVanServer, 15000);
+</script>
+</body>
+</html>
